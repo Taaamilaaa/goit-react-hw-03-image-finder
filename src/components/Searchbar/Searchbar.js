@@ -5,10 +5,11 @@ export class Searchbar extends React.Component{
     value: "",
   };
   handleChange = (e) => {    
-      this.setState({ [e.target.name]: e.target.value });     
+      this.setState({ value: e.target.value });     
   };
   handleSubmit = (e) => {
     e.preventDefault();
+    
     this.props.onSubmit(this.state.value);
     this.reset();
   };

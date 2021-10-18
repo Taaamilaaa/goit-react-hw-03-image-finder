@@ -1,4 +1,4 @@
-export function ImageGallery({value}) {
+export function ImageGallery({}) {
     
     return (
         <ul className="ImageGallery">
