@@ -9,24 +9,21 @@ import { ImageGallery } from '../components/ImageGallery/ImageGallery'
 
 class App extends React.Component {
   state = {
-    
     value: "",
-
   }
-  formSubmitHandle(data) {
-    if (data.trim() !== '') {
-    this.setState({ value: data });
-   }
-    
-   
-    
+  formSubmitHandle(value) {
+    console.log(value);
+    if (value.trim() === '') {
+      return
+    }
+    this.setState({ value})
   }
  
   render() {
     return (
        <>
        <Searchbar onSubmit={ this.formSubmitHandle}/>
-        <ImageGallery value={ this.state.value}/>
+        {/* <ImageGallery searchValue={ this.state.value}/> */}
       </>
   );
   }
