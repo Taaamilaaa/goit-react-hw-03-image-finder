@@ -2,24 +2,31 @@
 import React from 'react';
 import './App.css';
 import { Searchbar } from '../components/Searchbar/Searchbar';
-import {ImageGallery} from '../components/ImageGallery/ImageGallery'
+import { ImageGallery } from '../components/ImageGallery/ImageGallery'
+
+
+
 
 class App extends React.Component {
   state = {
-    status: "",
+    
     value: "",
 
   }
-  formSubmitHandle(value) {
-    console.log(typeof(value));
-    console.log(this.state.value);
+  formSubmitHandle(data) {
+    if (data.trim() !== '') {
+    this.setState({ value: data });
+   }
+    
+   
+    
   }
  
   render() {
     return (
        <>
        <Searchbar onSubmit={ this.formSubmitHandle}/>
-        <ImageGallery/>
+        <ImageGallery value={ this.state.value}/>
       </>
   );
   }

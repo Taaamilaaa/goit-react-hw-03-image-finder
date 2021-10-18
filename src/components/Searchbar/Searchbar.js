@@ -5,7 +5,8 @@ export class Searchbar extends React.Component{
     value: "",
   };
   handleChange = (e) => {    
-      this.setState({ value: e.target.value });     
+    this.setState({ value: e.target.value });
+    console.log(this.state.value);
   };
   handleSubmit = (e) => {
     e.preventDefault();
