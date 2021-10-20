@@ -1,5 +1,7 @@
+import { func } from "prop-types";
 import React from "react";
 import { ImageGalleryItem } from "../ImageGalleryItem/ImageGalleryItem";
+import PropTypes from 'prop-types';
 
 export const ImageGallery = ({ images, onClick}) => {
   return (
@@ -10,4 +12,9 @@ export const ImageGallery = ({ images, onClick}) => {
       
     </ul>
   );
+}
+
+ImageGallery.propTypes = {
+  images: PropTypes.array,
+  onClick: PropTypes.func,
 }

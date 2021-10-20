@@ -1,5 +1,8 @@
 import React from "react";
-
+import { alert} from '@pnotify/core';
+import '@pnotify/core/dist/PNotify.css';
+import '@pnotify/core/dist/BrightTheme.css';
+import PropTypes from 'prop-types';
 export class Searchbar extends React.Component {
   state = {
     value: "",
@@ -10,7 +13,9 @@ export class Searchbar extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     if (this.state.value.trim() === "") {
-      return alert("Please, enter your query!");
+      return alert({
+  text: 'Please, enter your query!'
+});
     }
     this.props.onSubmit(this.state.value);
    this.setState({
@@ -31,8 +36,8 @@ export class Searchbar extends React.Component {
             type="text"
             value={this.state.value}
             name="value"
-            //   autoComplete="off"
-            //   autoFocus
+              autoComplete="off"
+              autoFocus
             placeholder="Search images and photos"
             onChange={this.handleChange}
           />
@@ -40,4 +45,8 @@ export class Searchbar extends React.Component {
       </header>
     );
   }
+}
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func  
 }

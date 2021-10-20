@@ -5,8 +5,11 @@ import { ImageGallery } from "../components/ImageGallery/ImageGallery";
 import { pixabayFetch } from "../Services/pixabay";
 import { Button } from "../components/Button/Button";
 import { Modal } from "../components/Modal/Modal";
-// import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-// import {Loader} from '../components/Loader/Loader'
+import { alert, error } from "@pnotify/core";
+import "@pnotify/core/dist/PNotify.css";
+import "@pnotify/core/dist/BrightTheme.css";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "../components/Loader/Loader";
 
 class App extends React.Component {
   state = {
@@ -38,18 +41,22 @@ class App extends React.Component {
 
     this.setState({ isLoading: true });
 
-    pixabayFetch(options).then((images) => {
-      if (!images.length) {
-        alert("There are any pictures(( ");
-      }
-      this.setState((prevState) => {
-        return {
-          images: [...prevState.images, ...images],
-          page: prevState.page + 1,
-        };
-      });
-    });
-    this.setState({ isLoading: false });
+    pixabayFetch(options)
+      .then((images) => {
+        this.setState((prevState) => {
+          return {
+            images: [...prevState.images, ...images],
+            page: prevState.page + 1,
+          };
+        });
+      })
+      .catch((error) =>
+        error({
+          text: "No image!",
+          delay: 1000,
+        })
+      )
+      .finally(() => this.setState({ isLoading: false }));
   };
   imgBig = (img) => {
     this.setState({ modalIsOpen: true });
@@ -63,16 +70,17 @@ class App extends React.Component {
   };
 
   render() {
+    const {images, bigImg, isLoading, modalIsOpen} = this.state
     return (
       <div className="Container">
         <Searchbar onSubmit={this.formSubmitHandle} />
-
-        <ImageGallery images={this.state.images} onClick={this.imgBig} />
-        {this.state.images.length > 0 && (
+        {isLoading && <Loader />}
+        <ImageGallery images={images} onClick={this.imgBig} />
+        {images.length > 0 && (
           <Button text={"load more"} onClick={this.fetchImages} />
         )}
-        {this.state.modalIsOpen === true && (
-          <Modal img={this.state.bigImg} onClick={this.modalClose} />
+        {modalIsOpen === true && (
+          <Modal img={bigImg} onClick={this.modalClose} />
         )}
       </div>
     );
