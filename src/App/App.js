@@ -21,26 +21,30 @@ class App extends React.Component {
     bigImg: "",
   };
   formSubmitHandle = (value) => {
-    this.setState({ value });
+    this.setState({
+      value: value,
+      page: 1,
+      images: [],
+    });
   };
   componentDidUpdate(prevProps, prevState) {
     if (prevState.value !== this.state.value) {
+      
       this.fetchImages();
     }
-    window.scrollTo({
+     if (!this.state.modalIsOpen) {
+      window.scrollTo({
       top: document.documentElement.scrollHeight,
       behavior: "smooth",
     });
+    }
   }
-
   fetchImages = () => {
     const options = {
       query: this.state.value,
       page: this.state.page,
     };
-
     this.setState({ isLoading: true });
-
     pixabayFetch(options)
       .then((images) => {
         this.setState((prevState) => {
@@ -49,27 +53,24 @@ class App extends React.Component {
             page: prevState.page + 1,
           };
         });
-      })
-      .catch((error) =>
+      }).catch((error) =>
         error({
           text: "No image!",
           delay: 1000,
-        })
-      )
-      .finally(() => this.setState({ isLoading: false }));
+        })      
+      ).finally(() => this.setState({ isLoading: false }));      
   };
   imgBig = (img) => {
     this.setState({ modalIsOpen: true });
     this.setState({ bigImg: img });
-    console.log(this.state.bigImg);
+   
   };
   modalClose = (e) => {
-    if (e.currentTarget === e.target) {
+    if (e.currentTarget === e.target) {   
       this.setState({ modalIsOpen: false });
     }
   };
-
-  render() {
+  render() { 
     const {images, bigImg, isLoading, modalIsOpen} = this.state
     return (
       <div className="Container">
