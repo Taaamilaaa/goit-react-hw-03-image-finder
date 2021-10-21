@@ -61,14 +61,15 @@ class App extends React.Component {
       ).finally(() => this.setState({ isLoading: false }));      
   };
   imgBig = (img) => {
-    this.setState({ modalIsOpen: true });
-    this.setState({ bigImg: img });
    
+    this.setState({ bigImg: img });
+
+    this.toggleModal();
   };
-  modalClose = (e) => {
-    if (e.currentTarget === e.target) {   
-      this.setState({ modalIsOpen: false });
-    }
+ toggleModal = () => {
+    this.setState(state => ({
+      modalIsOpen: !state.modalIsOpen,
+    }));
   };
   render() { 
     const {images, bigImg, isLoading, modalIsOpen} = this.state
@@ -80,8 +81,10 @@ class App extends React.Component {
         {images.length > 0 && (
           <Button text={"load more"} onClick={this.fetchImages} />
         )}
-        {modalIsOpen === true && (
-          <Modal img={bigImg} onClick={this.modalClose} />
+        {modalIsOpen && (
+          <Modal showModal={this.imgBig}>
+            <img src={bigImg} alt="" />
+          </Modal>
         )}
       </div>
     );
